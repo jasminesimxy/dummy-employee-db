@@ -1,6 +1,8 @@
 
+const { rejects } = require('assert');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const { resolve } = require('path');
 const PORT = process.env.PORT || 3001;
 
 
@@ -30,7 +32,7 @@ const db = mysql.createConnection(
             "Add department",
             "Add role", 
             "Add employee", 
-            "Update employee"
+            "Update employee "
           ],
         },
       ];
@@ -52,9 +54,9 @@ const db = mysql.createConnection(
         return viewEmployee();
       } else if (answers.action == "Add employee") {
         return addEmployee();
-     } else (answers.action == "Update employee") {
-        return updateEmployee();
-     }
+     } else (answers.action == "Update employee") 
+        return updateEmployeeRole();
+    
 });
 }
 
@@ -71,8 +73,6 @@ function viewDepartments() {
       initialQuestion();
     });
 }
-
-initialQuestion();
 
 
 function addDepartments() {
@@ -159,7 +159,7 @@ function addRoles() {
 
 
 function viewEmployee() {
-    const sql = `SELECT first_name, last_name, role_id,manager_id  FROM employee`;
+    const sql = `SELECT first_name, last_name, role_id,manager_id  FROM employee, `;
     
     db.query(sql, (err, rows) => {
         if (err) {
@@ -217,62 +217,27 @@ function addEmployee() {
 }
 
 
-function updateEmployee() {
-    
+function updateEmployeeRole() {
+    const employeeChoices = viewEmployee()
+    console.table (viewEmployee);
+
+    const updateEmployeeRoleQuestion = [
+        {
+          type: "list",
+          name: "update_employee_role",
+          message: "Which employee's role would you like to change ?",
+          choices: [employeeChoices]
+        }
+    ];
+
     inquirer.
-    prompt([
-        {
-          type: "input",
-          name: "first_name",
-          message: "What is your first name?",
-        },
-
-        {
-          type: "input",
-          name: "last_name",
-          message: "What is your last name?",
-        },
-
-        {
-            type: "input",
-            name: "role_id",
-            message: "What is your role id?",
-          },
-          {
-            type: "input",
-            name: "manager_id",
-            message: "What is your manager id?",
-          }
-
-      ])
+    prompt(updateEmployeeRoleQuestion)
     .then((answers) => {
+            if (answers.update_employee_role == "??") {
+              return initialQuestion();
+          
+      }})
+    }
 
+    initialQuestion();
 
-    const sql = `UPDATE reviews SET review = ? WHERE id = ?`;
-    const params = [req.body.review, req.params.id];
-
-
-    db.query(sql, params, (err, result) => {
-        if (err) {
-          res.status(400).json({ error: err.message });
-        } else if (!result.affectedRows) {
-          res.json({
-            message: 'Movie not found'
-          });
-        } else {
-          res.json({
-            message: 'success',
-            data: req.body,
-            changes: result.affectedRows
-          });
-
-}
-    
-
-
-//   // first prompt - whats the emolpyee id  (employee_id)
-//   // second prompt - whats the new value you want to add (new ) role-id
-
-
-
-initialQuestion()
