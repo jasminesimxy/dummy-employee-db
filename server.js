@@ -209,19 +209,25 @@ function updateEmployeeRole() {
   // first sql statemnt to be executed
   const sql = `SELECT id, first_name, last_name, role_id, manager_id  FROM employee`;
 
-  db.query(sql, (err, rows) => {
+  db.query(sql, (err) => {
     if (err) {
       console.log(err)
       //res.status(500).json({ error: err.message });
       return null;
     }
 
+    let employees =rows
+    const employeeChoices = employees.map(({id, first_name, last_name}) => ({
+      name: `${first_name} ${last_name}`,
+      value:id
+    }))
+
     const updateEmployeeRoleQuestion = [
       {
         type: "list",
         name: "update_employee_role",
         message: "Which employee's role would you like to change ?",
-      
+        choices: employeeChoices
       },
     ];
 
@@ -229,7 +235,7 @@ function updateEmployeeRole() {
       if (answers.update_employee_role == "??") {
         return initialQuestion();
       }
-      console.log('asnwers is', answer);
+      console.log('answer is', answer);
 
 
       const newRoleQuestion = [
@@ -240,6 +246,15 @@ function updateEmployeeRole() {
           choices: [
             { id: 1, role: "Software engineers"},
             { id: 2, role: "Data engineers"},
+            { id: 3, role:"Systems Engineer"},
+            { id: 4, role:"Aerospace Engineer"},
+            { id: 5, role:"Marketing Manager"},
+            { id: 6, role:"Junior Marketing"},
+            { id: 7, role:"Marketing Coordinator"},
+            { id: 8, role:"Media Coordinator"},
+            { id: 9, role:"Chief Finance Officer"},
+            { id: 10, role:"Procurement Officer"},
+            { id: 11, role:"Accounts Payable Officer"},
           ],
         },
       ]
