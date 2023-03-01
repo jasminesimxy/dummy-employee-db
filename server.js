@@ -2,6 +2,7 @@ const { rejects } = require("assert");
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const { resolve } = require("path");
+const { listenerCount } = require("process");
 const PORT = process.env.PORT || 3001;
 
 // Connect to database
@@ -76,9 +77,8 @@ function addDepartments() {
       },
     ])
     .then((answers) => {
-      const sql = `INSERT INTO department (department_name)
-      VALUES (?)`;
-      const params = [answers.department_name];
+      const sql = `INSERT INTO department (department_name) VALUES (?)`;
+      const params = [answers.department_name,];
 
       db.query(sql, params, (err) => {
         if (err) {
@@ -89,6 +89,7 @@ function addDepartments() {
         initialQuestion();
       });
     });
+  
 }
 
 function viewRoles() {
@@ -220,15 +221,17 @@ function updateEmployeeRole() {
         type: "list",
         name: "update_employee_role",
         message: "Which employee's role would you like to change ?",
-        choices: rows,
+      
       },
     ];
 
     inquirer.prompt(updateEmployeeRoleQuestion).then((employee) => {
-      // if (answers.update_employee_role == "??") {
-      //   return initialQuestion();
-      // }
-      //console.log('asnwers is', answer);
+      if (answers.update_employee_role == "??") {
+        return initialQuestion();
+      }
+      console.log('asnwers is', answer);
+
+
       const newRoleQuestion = [
         {
           type: "list",
@@ -242,7 +245,7 @@ function updateEmployeeRole() {
       ]
 
       inquirer.prompt(newRoleQuestion).then(newRole => {
-        // get the
+        // get the role id
         const params = [ employee.id, newRole.id]
         // sql to pass the update query
         const SQL = `UPDATE employee SET role_id = ? WHERE id = ?`;
@@ -256,5 +259,8 @@ function updateEmployeeRole() {
       })
     });
   })
+
+  //update new
+}
 
 initialQuestion();
