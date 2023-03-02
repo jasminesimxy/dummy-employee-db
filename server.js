@@ -232,10 +232,10 @@ function updateEmployeeRole() {
     ];
 
     inquirer.prompt(updateEmployeeRoleQuestion).then((employee) => {
-      if (employees.update_employee_role == "??") {
+      if (employee.update_employee_role == "??") {
         return initialQuestion();
       }
-      console.log('answer is', answer);
+      console.log('answer is', employees);
 
 
       const newRoleQuestion = [
@@ -261,7 +261,7 @@ function updateEmployeeRole() {
 
       inquirer.prompt(newRoleQuestion).then(newRole => {
         // get the role id
-        const params = [ employee.id, newRole.id]
+        const params = [employee.id, newRole.id]
         // sql to pass the update query
         const SQL = `UPDATE employee SET role_id = ? WHERE id = ?`;
         db.query(SQL, params, function(err, results) {
