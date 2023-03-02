@@ -232,10 +232,11 @@ function updateEmployeeRole() {
     ];
 
     inquirer.prompt(updateEmployeeRoleQuestion).then((employee) => {
-      if (employee.update_employee_role == "??") {
+      if (employee.update_employee_role == "??") {  //donlt know what to put here. The result im getting is a result set header.
         return initialQuestion();
       }
-      console.log('answer is', employees);
+      
+      // console.log('answer is', employees);
 
 
       const newRoleQuestion = [
@@ -244,17 +245,17 @@ function updateEmployeeRole() {
           name: "newRole",
           message: "Please select the employee's new role.",
           choices: [
-            { id: 1, role: "Software engineers"},
-            { id: 2, role: "Data engineers"},
-            { id: 3, role:"Systems Engineer"},
-            { id: 4, role:"Aerospace Engineer"},
-            { id: 5, role:"Marketing Manager"},
-            { id: 6, role:"Junior Marketing"},
-            { id: 7, role:"Marketing Coordinator"},
-            { id: 8, role:"Media Coordinator"},
-            { id: 9, role:"Chief Finance Officer"},
-            { id: 10, role:"Procurement Officer"},
-            { id: 11, role:"Accounts Payable Officer"},
+            "Software engineers",
+           "Data engineers", 
+            "Systems Engineer",
+            "Aerospace Engineer",
+            "Marketing Manager", 
+            "Junior Marketing", 
+            "Marketing Coordinator", 
+            "Media Coordinator", 
+            "Chief Finance Officer",
+            "Procurement Officer" , 
+            "Accounts Payable Officer"
           ],
         },
       ]
