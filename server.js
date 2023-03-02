@@ -209,7 +209,7 @@ function updateEmployeeRole() {
   // first sql statemnt to be executed
   const sql = `SELECT id, first_name, last_name, role_id, manager_id  FROM employee`;
 
-  db.query(sql, (err) => {
+  db.query(sql, (err,rows) => {
     if (err) {
       console.log(err)
       //res.status(500).json({ error: err.message });
@@ -232,7 +232,7 @@ function updateEmployeeRole() {
     ];
 
     inquirer.prompt(updateEmployeeRoleQuestion).then((employee) => {
-      if (answers.update_employee_role == "??") {
+      if (employees.update_employee_role == "??") {
         return initialQuestion();
       }
       console.log('answer is', answer);
